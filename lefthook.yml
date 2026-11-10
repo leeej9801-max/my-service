@@ -1,0 +1,12 @@
+pre-commit:
+  commands:
+    ruff:
+      root: backend/
+      run: uv run ruff check . && uv run ruff format --check .
+    pyright:
+      root: backend/
+      run: uv run pyright
+
+    frontend:
+      root: frontend/
+      run: npm run lint && npm run format:check && npm run typecheck

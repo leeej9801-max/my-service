@@ -1,0 +1,41 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "lint": "eslint . --max-warnings 0",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json",
+    "test": "vitest run",
+    "build": "vite build",
+    "generate:api": "uv run --directory ../backend python -c \"import json; from pathlib import Path; from app.core.config import Settings; from app.main import create_app; from pydantic import PostgresDsn; Path('../frontend/openapi.json').write_text(json.dumps(create_app(Settings(_env_file=None, database_url=PostgresDsn('postgresql+asyncpg://unused@127.0.0.1/unused'))).openapi()), encoding='utf-8')\" && openapi-typescript openapi.json -o src/api/schema.d.ts && prettier --write src/api/schema.d.ts",
+    "check:api": "npm run generate:api && git diff --exit-code -- src/api/schema.d.ts"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-router": "8.5.1",
+    "axios": "1.21.1"
+  },
+  "devDependencies": {
+    "vite": "8.3.7",
+    "@vitejs/plugin-react": "6.3.0",
+    "typescript": "5.9.3",
+    "eslint": "9.39.5",
+    "@eslint/js": "9.39.5",
+    "typescript-eslint": "8.72.2",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-jsx-a11y": "6.10.2",
+    "prettier": "3.9.10",
+    "vitest": "5.1.0",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/dom": "10.4.2",
+    "jsdom": "31.0.0",
+    "openapi-typescript": "7.13.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/node": "24.19.2"
+  }
+}
